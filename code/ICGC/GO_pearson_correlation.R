@@ -9,10 +9,14 @@ clinical_data<-clinical_data %>%
 
 data<-read.delim('../../data/ICGC-LIRI-JP/clean/ICGC-LIRI-JP_rna_tpm_clean_50_include_normal.csv',row.names=1, sep=',', check.names = F)
 data<-data[,clinical_data$icgc_sample_id]
+non_na_columns <- !is.na(data["KLRB1", ]) # 有一个KLRB1是NA，需要剔除
+data <- data[, non_na_columns]
+
+clinical_data = clinical_data[clinical_data$icgc_sample_id %in% colnames(data), ]
+data<-data[,clinical_data$icgc_sample_id]
 
 sample_id = colnames(data)
-# is_cancer = sapply(sample_id, function(x) substr(x, 14, 14) == '0')
-# data = data[,is_cancer]
+data = log2(data + 1)###########################################################
 
 data<-as.matrix(data)
 length1<-length(data[1,])
@@ -53,4 +57,5 @@ row.names(correlation)<-row.names(data)
 write.csv(correlation,paste(result_dir, "Pearson_corr_with_KLRB1.csv", sep=''))
 
 high_corr <- subset(correlation,correlation[, 1]>=0.5)
+high_corr <- subset(high_corr,high_corr[, 2]<0.05)
 write.csv(high_corr,paste(result_dir, "Pearson_corr_with_KLRB1_high.csv", sep=''))

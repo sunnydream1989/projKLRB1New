@@ -27,7 +27,7 @@ p1 = ggplot() + geom_bar(data = dat,
   theme(plot.title = element_text(hjust = 0.5)) # legend.position = c(0.8,0.3), 
 
 label = strsplit2(dat$Term, split=':')[, 2]
-label[4] = "Viral protein interaction\nwith cytokine and cytokine receptor"
+# label[4] = "Viral protein interaction\nwith cytokine and cytokine receptor"
 p2 = p1 + scale_x_continuous(breaks=dat$ID, labels=label, name = '') + 
   theme(axis.text.y = element_text(color = "black"))
 p3 = p2 + ylab("-log10(P)") + scale_y_continuous(limits=c(0, ceiling(max(dat$P)))) + 

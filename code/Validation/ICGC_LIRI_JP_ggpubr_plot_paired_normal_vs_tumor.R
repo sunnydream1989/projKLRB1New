@@ -12,12 +12,16 @@ library(dplyr)
 
 # 读取基因表达的矩阵
 expr_file <- "../../data/ICGC-LIRI-JP/clean/ICGC-LIRI-JP_rna_tpm_clean_50_include_normal.csv"
-expr=read.csv(expr_file, header=TRUE, stringsAsFactors=FALSE, check.names=F)
-gene = expr['gene_id']
+expr=read.csv(expr_file, header=TRUE, stringsAsFactors=FALSE, check.names=F, row.names = 1)
+non_na_columns <- !is.na(expr["KLRB1", ])
+# 只保留这些列
+expr <- expr[, non_na_columns]
+
+gene = row.names(expr)
 
 clinical = read.csv('../../data/ICGC-LIRI-JP/clean/ICGC-LIRI-JP_clinical_clean_include_normal.csv', row.names = 1)
 clinical$sampleid = row.names(clinical)
-clinical = clinical[colnames(expr)[-1],]
+clinical = clinical[colnames(expr),]
 
 clinical_normal = clinical[grepl('Liver', clinical$submitted_sample_id),]
 clinical_tumor = clinical[grepl('Cancer', clinical$submitted_sample_id),]
@@ -31,14 +35,11 @@ clinical_tumor = clinical_tumor[common_donor, ]
 
 clinical = rbind(clinical_normal, clinical_tumor)
 
-row.names(expr) = expr$gene_id
 gene_set = c('KLRB1')
-expr = expr[gene_set, -1]
+expr <- expr[gene_set, clinical$sampleid]
 dim(expr)
 
-expr <- expr[, clinical$sampleid]
 expr[is.na(expr)] = 0
-
 expr = log2(expr + 1)
 
 data = data.frame(t(expr))
