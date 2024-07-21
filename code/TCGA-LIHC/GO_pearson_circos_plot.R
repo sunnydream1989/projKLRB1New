@@ -10,8 +10,8 @@ data = data[,is_cancer]
 
 data = log2(data + 1)###########################################################
 
-gene_list = c("KLRB1", "PDCD1", "CD274", "HAVCR2", "LAG3", "CTLA4", "TIGIT", "CD47", "CD200R1")
-gene_list2 = c("KLRB1", "PD1", "PDL1", "TIM-3", "LAG3", "CTLA4", "TIGIT", "CD47", "CD200R1")
+gene_list = c("KLRB1", "PDCD1", "CD274", "HAVCR2", "LAG3", "TIGIT", "CD200R1")
+gene_list2 = c("KLRB1", "PD1", "PDL1", "TIM3", "LAG3", "TIGIT", "CD200R1")
 
 dat <- data[gene_list, ]
 

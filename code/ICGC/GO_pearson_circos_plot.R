@@ -19,8 +19,8 @@ data<-data[,clinical_data$icgc_sample_id]
 sample_id = colnames(data)
 data = log2(data + 1)###########################################################
 
-gene_list = c("KLRB1", "PDCD1", "CD274", "HAVCR2", "LAG3", "CTLA4", "TIGIT", "CD47", "CD200R1")
-gene_list2 = c("KLRB1", "PD1", "PDL1", "TIM-3", "LAG3", "CTLA4", "TIGIT", "CD47", "CD200R1")
+gene_list = c("KLRB1", "PDCD1", "CD274", "HAVCR2", "LAG3", "TIGIT", "CD200R1")
+gene_list2 = c("KLRB1", "PD1", "PDL1", "TIM3", "LAG3", "TIGIT", "CD200R1")
 
 dat <- data[gene_list, ]
 
@@ -50,5 +50,6 @@ require(corrgram)
 
 # png('GO/perarson_matrix_plot.png')
 pdf("../../data/GO/ICGC//perarson_matrix_plot.pdf")
-corrgram(dat, order=F, lower.panel=panel.cor, upper.panel=panel.pie, text.panel=panel.txt,main="Correlogram of phenotype correlated markers", col.regions=colorRampPalette(c("green1", "white","firebrick1")))
+corrgram(dat, order=F, lower.panel=panel.cor, upper.panel=panel.pie, text.panel=panel.txt,main="ICGC", col.regions=colorRampPalette(c("firebrick1", "white","blue")))
 dev.off()
+

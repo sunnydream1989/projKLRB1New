@@ -22,12 +22,15 @@ if (!dir.exists(result_dir))
 pdf(file=paste(result_dir, "OurCohort_ROC_plot.pdf", sep = ""), width = 5,height = 5)
 
 plot(dfroc1,col="red",#颜色
+     auc.polygon=TRUE, 
      legacy.axes=T,#y轴格式更改
      print.auc=TRUE,#显示AUC面积
      print.thres=TRUE,#添加截点和95%CI
+     # print.thres.cex=0.5, #调整截断值的字体大小
+     auc.polygon.col="skyblue",
      # grid=c(0.1,0.1),
      # grid.col=c("blue","green")
-     )#网格线设置
+)#网格线设置
 dev.off()#输出pdf
 
 auc(dfroc1)

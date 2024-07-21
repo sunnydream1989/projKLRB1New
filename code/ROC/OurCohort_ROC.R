@@ -6,7 +6,7 @@ library(xlsx)
 library(pROC)
 library(ggpubr)
 
-data = read.xlsx2("../../data/ROC/公共数据库ROC.xlsx", sheetIndex=2)
+data = read.xlsx2("../../data/ROC/公共数据库ROC.xlsx", sheetIndex=4)
 
 data$Tumor = as.numeric(data$Group)
 data$CD161 = as.numeric(data$CD161)
@@ -19,7 +19,7 @@ if (!dir.exists(result_dir))
 {
   dir.create(result_dir, recursive = T)
 }
-pdf(file=paste(result_dir, "ICGC_ROC_plot.pdf", sep = ""), width = 5,height = 5)
+pdf(file=paste(result_dir, "OurCohort_ROC_plot.pdf", sep = ""), width = 5,height = 5)
 
 plot(dfroc1,col="red",#颜色
      auc.polygon=TRUE, 
