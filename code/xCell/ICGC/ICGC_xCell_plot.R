@@ -39,16 +39,17 @@ if (!dir.exists(result_dir))
 for (i in c('ImmuneScore', 'StromaScore', 'MicroenvironmentScore')){
   ImmuneScore = xCell_data_L[xCell_data_L$cell == i, ]
   
-  p <- ggviolin(ImmuneScore, 
+  p <- ggboxplot(ImmuneScore, 
                 x = "cell", 
                 y = "value",
                 # order=c("high", "low"),
                 # color = "KLRB1", 
                 fill="KLRB1", 
-                palette = c("#F5B7B1", "#85C1E9"),
+                palette = c("orange", "cyan"),
                 add = "boxplot",
-                width = 0.8,
-                size=0.5) + 
+                # width = 0.8,
+                # size=0.5
+                ) + 
     stat_compare_means(aes(group = KLRB1), label.y=max(ImmuneScore$value) * 1.1) + 
     guides(fill=guide_legend(title=NULL)) + # 隐藏legend标题
     xlab("KLRB1") + # xlab(indicator_name) +

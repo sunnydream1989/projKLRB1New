@@ -39,16 +39,17 @@ if (!dir.exists(result_dir))
 for (i in c('ImmuneScore', 'StromaScore', 'MicroenvironmentScore')){
   ImmuneScore = xCell_data_L[xCell_data_L$cell == i, ]
   
-  p <- ggviolin(ImmuneScore, 
-                x = "cell", 
-                y = "value",
-                # order=c("high", "low"),
-                # color = "KLRB1", 
-                fill="KLRB1", 
-                palette = c("#F5B7B1", "#85C1E9"),
-                add = "boxplot",
-                width = 0.8,
-                size=0.5) + 
+  p <- ggboxplot(ImmuneScore, 
+                 x = "cell", 
+                 y = "value",
+                 # order=c("high", "low"),
+                 # color = "KLRB1", 
+                 fill="KLRB1", 
+                 palette = c("orange", "cyan"),
+                 add = "boxplot",
+                 # width = 0.8,
+                 # size=0.5
+  ) + 
     stat_compare_means(aes(group = KLRB1), label.y=max(ImmuneScore$value) * 1.1) + 
     guides(fill=guide_legend(title=NULL)) + # 隐藏legend标题
     xlab("KLRB1") + # xlab(indicator_name) +
@@ -67,7 +68,6 @@ for (i in c('ImmuneScore', 'StromaScore', 'MicroenvironmentScore')){
   ggsave(file=paste0(result_dir, i, "_KLRB1_boxplot.pdf"),width = 10,height = 10,units = "cm")
   
 }
-
 
 ####
 xCell_data_L = xCell_data_L[(xCell_data_L$cell %in% rev(c('DC', 'aDC', 'cDC', 'pDC', 'CD8+ naive T-cells', 'CD8+ T-cells', 'CD8+ Tcm', 'CD8+ Tem', 'CD4+ memory T-cells', 'CD4+ naive T-cells', 'CD4+ T-cells', 'CD4+ Tcm', 'CD4+ Tem',  'Eosinophils', 'Fibroblasts', 'Macrophages', 'Macrophages M1', 'Macrophages M2', 'Mast cells', 'Monocytes', 'Neutrophils', 'NK cells', 'NKT', 'Tregs','B-cells', 'Basophils'))), ]
