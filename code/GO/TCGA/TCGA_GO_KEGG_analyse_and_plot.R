@@ -4,13 +4,12 @@ library(ggplot2)
 library(egg)##控制绘图区大小，以保证标签文字等所占空间不同时，同批图像还是同样大小
 library(grid)
 
-filepath = file.choose()
-
+filepath = '../../../data/GO/TCGA-LIHC/KEGG_chart_A9025E67D0D81721530587003.txt'
 dat = read.delim(filepath)
 
 dat$P = -log10(dat$Benjamini)
 dat <- dat[order(dat$Benjamini), ]
-n_line <- 5
+n_line <- 6
 dat <- dat[1:n_line,]
 dat <- dat[1:n_line,]
 dat$ID <- seq(n_line,1)

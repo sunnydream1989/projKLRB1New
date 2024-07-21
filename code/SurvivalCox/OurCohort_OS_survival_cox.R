@@ -6,9 +6,15 @@ library(survival)
 library(xlsx)
 
 # df = read.xlsx("../../data/TCGA-LIHC/clean/TCGA247COX8.xlsx", sheetIndex = 1)
-df = read.xlsx("../../data/OurCohort/COX data.xlsx", sheetIndex = 1)
+df = read.xlsx("../../data/OurCohort/COX data2.xlsx", sheetIndex = 1)
 df = df[,c("OSstatus","OS","Age","Gender","Hepatitis","Tumor.Size","Tumor.Number","PVTT","MVI","TNM.Stage.AJCC.","CNLC.Stage","BCLC","NLR","PLR","ALBI","AFP","CD161")]
 # df <- data.frame(apply(df, 2, as.numeric))
+
+# 定义需要转换为分类变量的列名
+cols_to_factor <- c("Age", "Gender", "Hepatitis", "Tumor.Size", "Tumor.Number", "PVTT", "MVI", "TNM.Stage.AJCC.", "CNLC.Stage", "BCLC", "NLR", "PLR", "ALBI", "AFP", "CD161")
+
+# 将指定的列转换为分类变量
+df[cols_to_factor] <- lapply(df[cols_to_factor], as.factor)
 
 pFilter=0.1 #设一个p值标准，后面用
 outResult=data.frame() #建一个空白数据框，后面for循环输出用
@@ -35,10 +41,10 @@ if (!dir.exists(result_dir))
 }
 
 outResult
-write.csv(outResult, paste(result_dir, "TCGA_LIHC_OS_survival_cox_result.csv", sep = ''), row.names = F)
+write.csv(outResult, paste(result_dir, "OurCohort_OS_survival_cox_result.csv", sep = ''), row.names = F)
 
 #2.2.1 读入前面输出的分析结果数据UniCoxSurvival.txt
-tducs <- read.table("../../data/SurvivalCox/TCGA_LIHC_OS_survival_cox_result.csv", header=T, sep=",", row.names=1, check.names=F)
+tducs <- read.table("../../data/SurvivalCox/OurCohort_OS_survival_cox_result.csv", header=T, sep=",", row.names=1, check.names=F)
 row.names(tducs) = c("Age (>60 vs <=60)", "Gender (Male vs Female)", "Hepatitis (Yes vs No)", 
                      "Tumor size (>5cm vs <=5cm)", "Tumor number (Multiple vs Solitary)",
                      "PVTT (Present vs Absent)", "MVI (Present vs Absent)",
@@ -61,7 +67,7 @@ pValue <- ifelse(tducs$pvalue<0.001, "<0.001", sprintf("%.3f", tducs$pvalue))#�
 # {
 #   dir.create(result_dir, recursive = T)
 # }
-pdf(file=paste(result_dir, "TCGA_LIHC_OS_UniCoxSurForestPlot.pdf", sep = ""), width = 12, height = 6)#pdf绘图命令开始打印过程，设置图片宽度6及高度3（自行根据数据设置）
+pdf(file=paste(result_dir, "OurCohort_OS_UniCoxSurForestPlot.pdf", sep = ""), width = 12, height = 6)#pdf绘图命令开始打印过程，设置图片宽度6及高度3（自行根据数据设置）
 #可以不执行pdf绘图命令，这样执行命令时图像会一一展示出来，执行pdf命令后图像仅在最后输出至pdf文件中
 n <- nrow(tducs)#提取出tducs的行数，也就是有多少个基因
 nRow <- n+1 #设置一个比基因数多1的数值
@@ -107,16 +113,17 @@ cox_result = step(coxph(Surv(OS, OSstatus) ~ Tumor.Size + Tumor.Number + PVTT + 
      trace = 0)
 
 cox_result_s = summary(cox_result)
+cox_result_s
 
 df_c = data.frame(cox_result_s$conf.int[,"exp(coef)"], cox_result_s$conf.int[,"lower .95"], cox_result_s$conf.int[,"upper .95"],cox_result_s$coefficients[,"Pr(>|z|)"])
 colnames(df_c) = c("HR", "L95CI", "H95CI", "pvalue")
 
 df_c
 # result_dir = "../../data/survival_cox/"
-write.csv(df_c, paste(result_dir, "TCGA_LIHC_OS_survival_multi_cox_result.csv", sep = ''), row.names = T)
+write.csv(df_c, paste(result_dir, "OurCohort_OS_survival_multi_cox_result.csv", sep = ''), row.names = T)
 
 #2.2.1 读入前面输出的分析结果数据UniCoxSurvival.txt
-tducs <- read.table(paste(result_dir, "TCGA_LIHC_OS_survival_multi_cox_result.csv", sep = ''), header=T, sep=",", row.names=1, check.names=F)
+tducs <- read.table(paste(result_dir, "OurCohort_OS_survival_multi_cox_result.csv", sep = ''), header=T, sep=",", row.names=1, check.names=F)
 row.names(tducs) = c("Tumor size (>5cm vs <=5cm)", "Tumor number (Multiple vs Solitary)",
                      "PVTT (Present vs Absent)", "TNM stage (III vs I+II)", "CNLC stage (III vs I+II)",
                      "BCLC (C vs B vs A)", "AFP level (>400ng/ml vs <=400ng/ml)", "CD161 (High vs Low)")
@@ -135,7 +142,7 @@ pValue <- ifelse(tducs$pvalue<0.001, "<0.001", sprintf("%.3f", tducs$pvalue))#�
 # {
 #   dir.create(result_dir, recursive = T)
 # }
-pdf(file=paste(result_dir, "TCGA_LIHC_MultiCoxSurForestPlot.pdf", sep = ""), width = 9,height = 3)#pdf绘图命令开始打印过程，设置图片宽度6及高度3（自行根据数据设置）
+pdf(file=paste(result_dir, "OurCohort_MultiCoxSurForestPlot.pdf", sep = ""), width = 9,height = 3)#pdf绘图命令开始打印过程，设置图片宽度6及高度3（自行根据数据设置）
 #可以不执行pdf绘图命令，这样执行命令时图像会一一展示出来，执行pdf命令后图像仅在最后输出至pdf文件中
 n <- nrow(tducs)#提取出tducs的行数，也就是有多少个基因
 nRow <- n+1 #设置一个比基因数多1的数值
