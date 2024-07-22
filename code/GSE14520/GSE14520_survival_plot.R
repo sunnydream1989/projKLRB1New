@@ -42,7 +42,7 @@ ggsurv <- ggsurvplot(fit,
                      font.x = c(12, "plain"),
                      font.y = c(12, "plain"),
                      font.tickslab = c(12, "plain"),
-                     palette="aaas" # 颜色板 
+                     palette=c("#EE0000FF", "#3B4992FF") # 颜色板 
                      # palette = c("#E7B800", "#2E9FDF")
 )
 
@@ -85,7 +85,7 @@ ggsurv <- ggsurvplot(fit,
                      font.x = c(12, "plain"),
                      font.y = c(12, "plain"),
                      font.tickslab = c(12, "plain"),
-                     palette="aaas" # 颜色板 
+                     palette=c("#EE0000FF", "#3B4992FF") # 颜色板 
                      # palette = c("#E7B800", "#2E9FDF")
 )
 

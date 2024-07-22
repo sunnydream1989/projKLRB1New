@@ -41,5 +41,5 @@ require(corrgram)
 
 # png('GO/perarson_matrix_plot.png')
 pdf("../../data/GO/TCGA-LIHC/perarson_matrix_plot.pdf")
-corrgram(dat, order=F, lower.panel=panel.cor, upper.panel=panel.pie, text.panel=panel.txt,main="Correlogram of phenotype correlated markers", col.regions=colorRampPalette(c("green1", "white","firebrick1")))
+corrgram(dat, order=F, lower.panel=panel.cor, upper.panel=panel.pie, text.panel=panel.txt,main="TCGA", col.regions=colorRampPalette(c("green1", "white","firebrick1")))
 dev.off()
