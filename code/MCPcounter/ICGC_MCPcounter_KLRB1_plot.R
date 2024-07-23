@@ -9,6 +9,7 @@ setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 mcp = read.csv('../../data/MCPcounter/ICGC_MCPCounter_score.csv', row.names = 1, check.names = F)
 # mcp = log2(mcp + 1)
+mcp <- mcp[row.names(mcp) != 'Fibroblasts', ]
 mcp = data.frame(t(mcp), check.names = F)
 mcp$patient = row.names(mcp)
 
@@ -21,6 +22,8 @@ data$KLRB1 = data$KLRB1_Group
 
 mcp = merge(mcp, data[,c('KLRB1', 'patient')], by = "patient", all = FALSE)
 
+write.csv(mcp, file="../../data/MCPcounter/ICGC_MCPCounter_score_KLRB1.csv",row.names =T,quote=F)
+
 mcp = mcp %>% pivot_longer(-c('patient','KLRB1'), names_to = "cell", values_to = "abundances")
 
 mcp$KLRB1 = factor(mcp$KLRB1, levels = c('low', 'high'))
@@ -28,17 +31,18 @@ mcp$KLRB1 = factor(mcp$KLRB1, levels = c('low', 'high'))
 p <- ggboxplot(mcp, x = "cell", y = "abundances",
                color = "KLRB1", palette = c("#F7A24F", "#C6133B")
 ) + # orientation = "horizontal"
-  scale_y_log10() +
+  # scale_y_log10() +
   stat_compare_means(aes(group = KLRB1), label = "p.signif") + 
   guides(fill=guide_legend(title=NULL)) + # 隐藏legend标题
   xlab("") + # xlab(indicator_name) +
-  ylab("log2(MCPcounter + 1)") +
+  ylab("Estimated proportion") +
   # ylim(c(0,2)) + 
+  # coord_cartesian(ylim = c(0, 20)) +
   labs(title="ICGC") +
   theme(plot.title=element_text(hjust=0.45), # title居中
         panel.border = element_rect(color = "black", fill = NA, size=1),  # 增加边框
         legend.title = element_blank(),
-        legend.position = c(0.95,0.25),
+        legend.position = c(0.95,0.85),
         legend.background=element_rect(fill = alpha("white", 0)),  # legend背景透明
         legend.text = element_text(size=8),
         axis.text.x = element_text(angle=45, hjust=1, vjust=1)
