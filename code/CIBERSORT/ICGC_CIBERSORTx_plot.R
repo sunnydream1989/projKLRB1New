@@ -6,8 +6,8 @@ library(dplyr)
 library(tidyr)
 library(reshape2)
 
-xCell_data = read.csv('../../data/CIBERSORT/CIBERSORTx_Job19_Results.csv', sep=',', check.names = F)
-KLRB1_data = read.table('../../data/TCGA-LIHC/clean/TCGA-LIHC_tpm_protein_coding_clean_tumor.txt', header=T, sep="\t", check.names=F,row.names = 1)
+xCell_data = read.csv('../../data/CIBERSORT/CIBERSORTx_Job20_Results.csv', sep=',', check.names = F)
+KLRB1_data = read.table('../../data/ICGC-LIRI-JP/clean/ICGC-LIRI-JP_tpm_protein_coding_clean_tumor_no_na.txt', header=T, sep="\t", check.names=F,row.names = 1)
 
 stopifnot(all(xCell_data$Mixture == colnames(KLRB1_data)))
 xCell_data = select(xCell_data,-c("P-value","Correlation","RMSE"))
@@ -48,5 +48,5 @@ if (!dir.exists(result_dir))
 {
   dir.create(result_dir, recursive = T)
 }
-ggsave(paste(result_dir, "TCGA_CIBERSORTx_plot.pdf", sep=''),width = 30,height = 20,units = "cm")
+ggsave(paste(result_dir, "ICGC_CIBERSORTx_plot.pdf", sep=''),width = 30,height = 20,units = "cm")
 
