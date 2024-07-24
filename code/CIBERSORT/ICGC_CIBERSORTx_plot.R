@@ -24,14 +24,17 @@ xCell_data = xCell_data %>% pivot_longer(-c('Mixture','KLRB1.Group'), names_to =
 # xCell_data$cell = gsub("  ",  " ", as.matrix(xCell_data$cell))
 # xCell_data$cell <- factor(xCell_data$cell,levels = rev(c('MicroenvironmentScore','StromaScore','ImmuneScore','iDC','cDC','aDC','MSC','Th2 cells','Basophils','Th1 cells','Macrophages M2','MEP','Mesangial cells','Fibroblasts','Macrophages','CD8+ Tcm','CD4+ Tem','NKT','CLP','Plasma cells','Pericytes','CD8+ T-cells','B-cells','pDC','DC','pro B-cells','Tregs','CD8+ naive T-cells','GMP','Macrophages M1','CD4+ naive T-cells','Class-switched memory B-cells','Monocytes','CD4+ memory T-cells','Memory B-cells','Mast cells','CD4+ Tcm','CD8+ Tem','Megakaryocytes','Tgd cells','CMP','naive B-cells','CD4+ T-cells','Neutrophils','NK cells','Eosinophils')))
 
-p <- ggboxplot(xCell_data, x = "cell", y = "abundances",
-               color = "KLRB1.Group", palette = c("#ff5c5c", "#40daff"), 
-               ) + # orientation = "horizontal"
+p <- ggboxplot(xCell_data, x = "cell", y = "abundances", 
+               color = "KLRB1.Group", fill = "KLRB1.Group",
+               # palette = c("#ff5c5c", "#40daff"),
+) + # orientation = "horizontal"
+  # scale_fill_manual(values = c("KLRB1.Group1" = "#ff5c5c", "KLRB1.Group2" = "#40daff")) +
+  scale_color_manual(values = c("KLRB1.Group1" = "#000000", "KLRB1.Group2" = "#000000")) +
   stat_compare_means(aes(group = KLRB1.Group), label = "p.signif") + 
   guides(fill=guide_legend(title=NULL)) + # 隐藏legend标题
   xlab("") + # xlab(indicator_name) +
   ylab("Cell composition") +
-  labs(title="TCGA") +
+  labs(title="ICGC") +
   theme(plot.title=element_text(hjust=0.45), # title居中
         panel.border = element_rect(color = "black", fill = NA, size=1),  # 增加边框
         legend.title = element_blank(),
